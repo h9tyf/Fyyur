@@ -47,20 +47,21 @@ class Venue(db.Model):
     @hybrid_property
     def past_shows(self):
       currentDateTime = datetime.now()
-      res = db.session.query(Show).filter_by(venue_id=id).filter(Show.start_time < currentDateTime).all()
+      res = db.session.query(Show).filter_by(venue_id=self.id).filter(Show.start_time < currentDateTime).all()
       return res
     @hybrid_property
     def upcoming_shows(self):
       currentDateTime = datetime.now()
-      res = db.session.query(Show).filter_by(venue_id=id).filter_by(start_time > currentDateTime).all()
+      res = db.session.query(Show).filter_by(venue_id=self.id).filter(Show.start_time > currentDateTime).all()
       return res
     @hybrid_property
     def past_shows_count(self):
-      return db.session.query(Show).filter_by(venue_id=id).filter_by(start_time < currentDateTime).count()
+      currentDateTime = datetime.now()
+      return db.session.query(Show).filter_by(venue_id=self.id).filter(Show.start_time < currentDateTime).count()
     @hybrid_property
     def upcoming_shows_count(self):
-      currentDateTime = datetime.now()
-      return Show.query.filter_by(venue_id=id).filter(Show.start_time>currentDateTime).count()
+      currentDateTime = datetime.utcnow()
+      return db.session.query(Show).filter_by(venue_id=self.id).filter(Show.start_time > currentDateTime).count()
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -81,28 +82,29 @@ class Artist(db.Model):
     @hybrid_property
     def past_shows(self):
       currentDateTime = datetime.now()
-      res = db.session.query(Show).filter_by(artist_id=id).filter_by(start_time < currentDateTime).all()
+      res = db.session.query(Show).filter_by(artist_id=id).filter(start_time < currentDateTime).all()
       return res
     @hybrid_property
     def upcoming_shows(self):
       currentDateTime = datetime.now()
-      res = db.session.query(Show).filter_by(artist_id=id).filter_by(start_time > currentDateTime).all()
+      res = db.session.query(Show).filter_by(artist_id=id).filter(start_time > currentDateTime).all()
       return res
     @hybrid_property
     def past_shows_count(self):
-      return db.session.query(Show).filter_by(artist_id=id).filter_by(start_time < currentDateTime).count()
+      currentDateTime = datetime.now()
+      return db.session.query(Show).filter_by(artist_id=id).filter(start_time < currentDateTime).count()
     @hybrid_property
     def upcoming_shows_count(self):
-      #return db.session.query(Item).join(Show).filter(Item.artist_id==id).filter(Show.start_time > currentDateTime).count()
-      return db.session.query(Item).join(Show).filter(Item.artist_id==id).count()
+      currentDateTime = datetime.now()
+      return db.session.query(Show).filter_by(artist_id=id).filter(Show.start_time > currentDateTime).count()
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Show(db.Model):
   __tablename__ = 'Show'
   id = db.Column(db.Integer, primary_key=True)
-  venue_id = db.Column('venue_id', db.Integer, db.ForeignKey('Venue.id'), primary_key=True),
-  artist_id = db.Column('artist_id', db.Integer, db.ForeignKey('Artist.id'), primary_key=True),
+  venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
+  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
   start_time = db.Column(db.DateTime, nullable=False)
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
@@ -112,7 +114,10 @@ class Show(db.Model):
 #----------------------------------------------------------------------------#
 
 def format_datetime(value, format='medium'):
-  date = dateutil.parser.parse(value)
+  if isinstance(value, str):
+    date = dateutil.parser.parse(value)
+  else:
+    date = value
   if format == 'full':
       format="EEEE MMMM, d, y 'at' h:mma"
   elif format == 'medium':
