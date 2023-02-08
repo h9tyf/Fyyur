@@ -24,7 +24,6 @@ moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-# TODO: connect to a local postgresql database
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -63,7 +62,6 @@ class Venue(db.Model):
       currentDateTime = datetime.utcnow()
       return db.session.query(Show).filter_by(venue_id=self.id).filter(Show.start_time > currentDateTime).count()
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
@@ -98,7 +96,6 @@ class Artist(db.Model):
       currentDateTime = datetime.now()
       return db.session.query(Show).filter_by(artist_id=self.id).filter(Show.start_time > currentDateTime).count()
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Show(db.Model):
   __tablename__ = 'Show'
@@ -118,8 +115,6 @@ class Show(db.Model):
   @hybrid_property
   def venue_image_link(self):
     return db.session.query(Venue).filter_by(id=self.venue_id).first().image_link
-
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 
 #----------------------------------------------------------------------------#
 # Filters.
