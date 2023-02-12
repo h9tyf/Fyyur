@@ -61,6 +61,13 @@ class Venue(db.Model):
     def upcoming_shows_count(self):
       currentDateTime = datetime.utcnow()
       return db.session.query(Show).filter_by(venue_id=self.id).filter(Show.start_time > currentDateTime).count()
+    '''
+    @upcoming_shows_count.expression
+    def upcoming_shows_count(cls):
+      currentDateTime = datetime.utcnow()
+      return select(func.count(Show.id))
+      #return db.session.query(Show).filter_by(venue_id=cls.id).filter(Show.start_time > currentDateTime).count()
+    '''
 
 
 class Artist(db.Model):
@@ -149,28 +156,24 @@ def index():
 def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
-  data=[{
-    "city": "San Francisco",
-    "state": "CA",
-    "venues": [{
-      "id": 1,
-      "name": "The Musical Hop",
-      "num_upcoming_shows": 0,
-    }, {
-      "id": 3,
-      "name": "Park Square Live Music & Coffee",
-      "num_upcoming_shows": 1,
-    }]
-  }, {
-    "city": "New York",
-    "state": "NY",
-    "venues": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
-  }]
-  return render_template('pages/venues.html', areas=data);
+  city_state = db.session.query(Venue.city, Venue.state).group_by(Venue.city,Venue.state).all()
+  data = []
+  for res in city_state:
+    data_tmp = {}
+    data_tmp['city'] = res.city
+    data_tmp['state'] = res.state
+    data_tmp['venues'] = []
+    venues = db.session.query(Venue.id, Venue.name).filter_by(city=res.city).filter_by(state=res.state).all()
+    currentDateTime = datetime.utcnow()
+    for v in venues:
+      data_tmp['venues'].append({
+        "id":v.id,
+        "name":v.name,
+        "num_upcoming_shows":Venue.query.filter_by(id=v.id).first().upcoming_shows_count
+      })
+    if len(data_tmp['venues']) != 0:
+      data.append(data_tmp)
+  return render_template('pages/venues.html', areas=data)
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
