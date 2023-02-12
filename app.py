@@ -175,6 +175,7 @@ def venues():
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
+  word = request.form.get('search_term', '')
   res = db.session.query(Venue).filter(Venue.name.like('%'+ word +'%')).all()
   response = {
     "count": len(res),
