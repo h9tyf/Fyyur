@@ -27,36 +27,36 @@ venue1 = Venue(id=1, name="The Musical Hop", city="San Francisco",
   facebook_link="https://www.facebook.com/TheMusicalHop", 
   website="https://www.themusicalhop.com", 
   seeking_talent=True, seeking_description="We are on the lookout for a local artist to play every two weeks. Please call us.",
-  genres=["Jazz", "Reggae", "Swing", "Classical", "Folk"])
+  genres="Jazz,Reggae,Swing,Classical,Folk")
 venue2 = Venue(id=2, name="The Dueling Pianos Bar", city="New York", 
   state="NY", address="335 Delancey Street", phone="914-003-1132", 
   image_link="https://images.unsplash.com/photo-1497032205916-ac775f0649ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80", 
   facebook_link="https://www.facebook.com/theduelingpianos",
   website="https://www.theduelingpianos.com", 
   seeking_talent=False, seeking_description="",
-  genres=["Classical", "R&B", "Hip-Hop"])
+  genres="Classical,R&B,Hip-Hop")
 venue3 = Venue(id=3, name="Park Square Live Music & Coffee", city="San Francisco", 
   state="CA", address="34 Whiskey Moore Ave", phone="415-000-1234", 
   image_link="https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80", 
   facebook_link="https://www.facebook.com/ParkSquareLiveMusicAndCoffee",
   website="https://www.parksquarelivemusicandcoffee.com", 
   seeking_talent=False, seeking_description="",
-  genres=["Rock n Roll", "Jazz", "Classical", "Folk"])
+  genres="Rock n Roll,Jazz,Classical,Folk")
 
 # artist1 = Artist(name=, city=, state=, phone=, genres=, image_link=, facebook_link=)
 
 
-artist4 = Artist(id=4, name="Guns N Petals", city="San Francisco", state="CA", phone="326-123-5000", genres=["Rock n Roll"], 
+artist4 = Artist(id=4, name="Guns N Petals", city="San Francisco", state="CA", phone="326-123-5000", genres="Rock n Roll", 
   image_link="https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80", 
   facebook_link="https://www.facebook.com/GunsNPetals", 
   website="https://www.gunsnpetalsband.com", seeking_venue = True, 
   seeking_description="Looking for shows to perform at in the San Francisco Bay Area!")
-artist5 = Artist(id=5, name="Matt Quevedo", city="New York", state="NY", phone="300-400-5000", genres=["Jazz"],
+artist5 = Artist(id=5, name="Matt Quevedo", city="New York", state="NY", phone="300-400-5000", genres="Jazz",
   image_link="https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80", 
   facebook_link="https://www.facebook.com/mattquevedo923251523", 
   website="", seeking_venue = False, 
   seeking_description="")
-artist6 = Artist(id=6, name="The Wild Sax Band", city="San Francisco", state="CA", phone="432-325-5432", genres=["Jazz", "Classical"], 
+artist6 = Artist(id=6, name="The Wild Sax Band", city="San Francisco", state="CA", phone="432-325-5432", genres="Jazz,Classical", 
   image_link="https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80", 
   facebook_link="", 
   website="", seeking_venue = False, 
