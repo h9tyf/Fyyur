@@ -193,6 +193,8 @@ def search_venues():
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   data = Venue.query.filter_by(id=venue_id).first()
+  db.session.expunge(data)
+  data.genres = data.genres.split(",")
   return render_template('pages/show_venue.html', venue=data)
 
 #  Create Venue
@@ -263,6 +265,8 @@ def search_artists():
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
   data = Artist.query.filter_by(id=artist_id).first()
+  db.session.expunge(data)
+  data.genres = data.genres.split(",")
   return render_template('pages/show_artist.html', artist=data)
 
 #  Update
